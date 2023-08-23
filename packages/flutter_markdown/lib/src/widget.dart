@@ -188,6 +188,8 @@ abstract class MarkdownWidget extends StatefulWidget {
     this.listItemCrossAxisAlignment =
         MarkdownListItemCrossAxisAlignment.baseline,
     this.softLineBreak = false,
+    this.withDefaultBlockSyntaxes = true,
+    this.withDefaultInlineSyntaxes = true,
   });
 
   /// The Markdown to display.
@@ -287,6 +289,16 @@ abstract class MarkdownWidget extends StatefulWidget {
 
   /// Subclasses should override this function to display the given children,
   /// which are the parsed representation of [data].
+
+  /// Whether to use default block syntaxes.
+  final bool withDefaultBlockSyntaxes;
+
+  /// Whether to use default inline syntaxes.
+  ///
+  /// Need to set both [withDefaultInlineSyntaxes] and [encodeHtml] to
+  /// `false` to disable all inline syntaxes including html encoding syntaxes.
+  final bool withDefaultInlineSyntaxes;
+
   @protected
   Widget build(BuildContext context, List<Widget>? children);
 
@@ -333,6 +345,8 @@ class _MarkdownWidgetState extends State<MarkdownWidget>
       inlineSyntaxes: widget.inlineSyntaxes,
       extensionSet: widget.extensionSet ?? md.ExtensionSet.gitHubFlavored,
       encodeHtml: false,
+      withDefaultBlockSyntaxes: widget.withDefaultBlockSyntaxes,
+      withDefaultInlineSyntaxes: widget.withDefaultInlineSyntaxes,
     );
 
     // Parse the source Markdown data into nodes of an Abstract Syntax Tree.
@@ -433,6 +447,8 @@ class MarkdownBody extends MarkdownWidget {
     this.shrinkWrap = true,
     super.fitContent = true,
     super.softLineBreak,
+    super.withDefaultBlockSyntaxes,
+    super.withDefaultInlineSyntaxes,
   });
 
   /// If [shrinkWrap] is `true`, [MarkdownBody] will take the minimum height
